@@ -31,7 +31,7 @@ PImage TuneImage(PImage src) {
   src.loadPixels();
 
   for (int i = 0; i < src.width*src.width; i++) {
-    int tmp_h = src.width * src.width/2 - src.width * src.height/2;
+    int tmp_h = src.width * (int)(src.width/2) - src.width * (int)(src.height/2);
     if (i < tmp_h){
       res.pixels[i] = color(back_r,back_g,back_b);
     }else if (i > tmp_h && i < tmp_h + src.width*src.height){
