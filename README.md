@@ -6,7 +6,7 @@ Square Photo Maker
 - controlP5 library
 
 # Usage
-See below page(Japanese only):
+See below page(Japanese only):  
 http://lab.hendigi.com/squareholic/
 
 
