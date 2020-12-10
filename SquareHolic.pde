@@ -24,8 +24,8 @@ PImage TuneImage(PImage src) {
   float[] lut_s = new float[256];
   for (int i = 0; i < 256; i++) {
     lut_s[i] = 255*pow(((float)i/255), (1/gamma_s));
-  }  
-  
+  }
+
   int size = max(src.width, src.height);
   PImage res = createImage(size, size, RGB);
 
@@ -40,7 +40,7 @@ PImage TuneImage(PImage src) {
       }
       else {
         color tmp_color = src.pixels[tmp_x + tmp_y * src.width];
-  
+
         res.pixels[x + y * size] = color(
             (int)(lut_s[(int)red(tmp_color)]*gain_s), 
             (int)(lut_s[(int)green(tmp_color)]*gain_s), 
@@ -136,7 +136,7 @@ public void controlEvent(ControlEvent theEvent) {
     selectOutput("Select a file to write to:", "fileSelected_save");
   }
 
- if (theEvent.isFrom("Exit")) {
+  if (theEvent.isFrom("Exit")) {
     exit();
   }
   redraw = true;
