@@ -26,24 +26,27 @@ PImage TuneImage(PImage src) {
     lut_s[i] = 255*pow(((float)i/255), (1/gamma_s));
   }  
   
-  PImage res = createImage(src.width, src.width, RGB);
+  int size = max(src.width, src.height);
+  PImage res = createImage(size, size, RGB);
 
-  src.loadPixels();
+  src.loadPixels(); //<>//
 
-  for (int i = 0; i < src.width*src.width; i++) {
-    int tmp_h = src.width * (int)(src.width/2) - src.width * (int)(src.height/2);
-    if (i < tmp_h){
-      res.pixels[i] = color(back_r,back_g,back_b);
-    }else if (i > tmp_h && i < tmp_h + src.width*src.height){
-      color tmp_color = src.pixels[i-tmp_h];
-
-      res.pixels[i] = color(
-          (int)(lut_s[(int)red(tmp_color)]*gain_s), 
-          (int)(lut_s[(int)green(tmp_color)]*gain_s), 
-          (int)(lut_s[(int)blue(tmp_color)]*gain_s)
-          );
-    }else if (i > tmp_h + src.width*src.height){
-      res.pixels[i] = color(back_r,back_g,back_b);
+  for (int y = 0; y < size; y++) {
+    for (int x = 0; x < size; x++) {
+      int tmp_x = x - (size - src.width) / 2;
+      int tmp_y = y - (size - src.height) / 2;
+      if (tmp_x < 0 || tmp_x >= src.width || tmp_y < 0 || tmp_y >= src.height) {
+        res.pixels[x + y * size] = color(back_r,back_g,back_b);
+      }
+      else {
+        color tmp_color = src.pixels[tmp_x + tmp_y * src.width];
+  
+        res.pixels[x + y * size] = color(
+            (int)(lut_s[(int)red(tmp_color)]*gain_s), 
+            (int)(lut_s[(int)green(tmp_color)]*gain_s), 
+            (int)(lut_s[(int)blue(tmp_color)]*gain_s)
+            );
+      }
     }
   }
   return res;
@@ -143,9 +146,7 @@ void draw() {
   background(0);
   if (redraw) {
     redraw = false;
-    if(base.width > base.height){
-      tuned = TuneImage(base);
-    }
+    tuned = TuneImage(base);
   }
   draw_image(tuned, cont_w, 0, size_x, size_y);
 }
